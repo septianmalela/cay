@@ -10,9 +10,20 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # end
 
   # POST /resource
-  # def create
-  #   super
-  # end
+  def create
+    build_resource(sign_up_params)
+
+    resource.save
+    yield resource if block_given?
+    if resource.errors.present?
+      flash[:alert] = resource.errors.full_messages
+      redirect_to new_user_registration_path
+    else
+      sign_up(resource_name, resource)
+      flash[:notice] = 'Registrations Successfully.'
+      redirect_to root_path
+    end
+  end
 
   # GET /resource/edit
   # def edit
@@ -51,9 +62,9 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # end
 
   # The path used after sign up.
-  def after_sign_up_path_for(resource)
-    root_path
-  end
+  # def after_sign_up_path_for(resource)
+  #   root_path
+  # end
 
   # The path used after sign up for inactive accounts.
   # def after_inactive_sign_up_path_for(resource)

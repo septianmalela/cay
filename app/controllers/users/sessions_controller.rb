@@ -9,14 +9,25 @@ class Users::SessionsController < Devise::SessionsController
   # end
 
   # POST /resource/sign_in
-  # def create
-  #   super
-  # end
+  def create
+    user = User.find_by(email: params[:user][:email])
+    if user&.valid_password?(params[:user][:password])
+      sign_in(resource_name, user)
+      flash[:notice] = 'Login Successfully!'
+      redirect_to root_path
+    else
+      flash[:alert] = 'Email or Password is wrong!'
+      redirect_to new_user_session_path
+    end
+  end
 
   # DELETE /resource/sign_out
-  # def destroy
-  #   super
-  # end
+  def destroy
+    signed_out = (Devise.sign_out_all_scopes ? sign_out : sign_out(resource_name))
+    flash[:notice] = 'Sign Out Successfully!'
+    yield if block_given?
+    redirect_to new_user_session_path
+  end
 
   # protected
 
@@ -25,11 +36,11 @@ class Users::SessionsController < Devise::SessionsController
   #   devise_parameter_sanitizer.permit(:sign_in, keys: [:attribute])
   # end
 
-  def after_sign_out_path_for(resource_or_scope)
-    new_user_session_path
-  end
+  # def after_sign_out_path_for(resource_or_scope)
+  #   new_user_session_path
+  # end
 
-  def after_sign_in_path_for(resource_or_scope)
-    root_path
-  end
+  # def after_sign_in_path_for(resource_or_scope)
+  #   root_path
+  # end
 end

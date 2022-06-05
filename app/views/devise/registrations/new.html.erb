@@ -5,7 +5,12 @@
 
     <div class="field col-md-4">
       <%= f.label :email %><br />
-      <%= f.email_field :email, autofocus: true, autocomplete: "email", class: 'form-control' %>
+      <%= f.email_field :email, autofocus: true, autocomplete: "email", class: 'form-control', required: true %>
+    </div>
+
+    <div class="field col-md-4">
+      <%= f.label :username %><br />
+      <%= f.text_field :username, autofocus: true, autocomplete: "username", class: 'form-control', required: true %>
     </div>
 
     <div class="field col-md-4">
