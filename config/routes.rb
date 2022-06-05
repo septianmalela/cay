@@ -6,8 +6,16 @@ Rails.application.routes.draw do
         passwords: 'users/passwords'
   }
   resources :homes
-
   root 'homes#index'
+
+  namespace :user do
+    resources :follows, only: :index do
+      collection do
+        put :follow
+        put :unfollow
+      end
+    end
+  end
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Defines the root path route ("/")
