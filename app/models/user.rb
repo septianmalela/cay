@@ -10,6 +10,16 @@ class User < ApplicationRecord
   has_many :followers, through: :following_users
 
   validates :username, uniqueness: true
+  validate :username_without_spaces
+
+  def username_without_spaces
+    regex_validate = username.match(/^\S*$/)
+
+    unless regex_validate.present?
+      errors.add(:base, 'Username without spaces')
+      throw(:abort)
+    end
+  end
 
   def follow?(user)
     followees.find(user.id).present? rescue nil
