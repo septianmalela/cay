@@ -9,6 +9,8 @@ class User < ApplicationRecord
   has_many :following_users, foreign_key: :followee_id, class_name: 'Follow'
   has_many :followers, through: :following_users
 
+  scope :without_self, -> (user) { where.not(id: user) }
+
   validates :username, uniqueness: true
   validate :username_without_spaces
 
