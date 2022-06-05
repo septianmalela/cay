@@ -1,1 +1,32 @@
-<%= button_to 'Logout', destroy_user_session_path, method: :delete %>
+<h3>Username: <%= current_user.username %></h3>
+<h4>Followings: <%= current_user.followees.count %></h4>
+<h4>Followers: <%= current_user.followers.count %></h4>
+
+<% if params[:q].present? %>
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">No</th>
+        <th scope="col">Email</th>
+        <th scope="col">Username</th>
+        <th scope="col"></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @users.each_with_index do |user, idx| %>
+      <tr>
+        <th><%= idx + 1 %></th>
+        <td><%= user.email %></td>
+        <td><%= user.username %></td>
+        <td>
+          <% if current_user.follow?(user) %>
+            <%= button_to 'Unfollow', unfollow_user_follows_path(id: user.id), class: 'btn btn-danger', method: :put %>
+          <% else %>
+            <%= button_to 'Follow', follow_user_follows_path(id: user.id), class: 'btn btn-primary', method: :put %>
+          <% end %>
+        </td>
+      </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>

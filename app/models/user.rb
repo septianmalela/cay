@@ -9,5 +9,9 @@ class User < ApplicationRecord
   has_many :following_users, foreign_key: :followee_id, class_name: 'Follow'
   has_many :followers, through: :following_users
 
-  # validates :username, uniqueness: true
+  validates :username, uniqueness: true
+
+  def follow?(user)
+    followees.find(user.id).present? rescue nil
+  end
 end

@@ -9,6 +9,11 @@ Rails.application.routes.draw do
   root 'homes#index'
 
   namespace :user do
+    resources :users, except: %i[edit update delete] do
+      collection do
+        get :friend
+      end
+    end
     resources :follows, only: :index do
       collection do
         put :follow

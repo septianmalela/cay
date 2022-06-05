@@ -3,12 +3,12 @@ class User::FollowsController < ApplicationController
 
   def follow
     current_user.followees << @user
-    redirect_to root_path, flash[:notice] = 'Follow Successfully'
+    redirect_to root_path, notice: "Followeed #{@user.username}"
   end
 
   def unfollow
     current_user.followed_users.find_by(followee_id: @user.id).destroy
-    redirect_to root_path, flash[:alert] = 'Unfollow Successfully'
+    redirect_to root_path, alert: "Unfollow #{@user.username}"
   end
 
   private

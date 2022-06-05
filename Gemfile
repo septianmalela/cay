@@ -76,3 +76,6 @@ gem 'devise'
 
 # GEM BOOTSTRAP
 gem 'bootstrap', '~> 5.1.3'
+
+# GEM SEARCH
+gem 'ransack'
