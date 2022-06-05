@@ -11,11 +11,28 @@
   </head>
 
   <body>
-    <div class="container">
-      <%= notice %>
-      <%= alert %>
-    </div>
- 
+    <%= render 'layouts/shared/header' if user_signed_in? %>
+    <div class="container pt-3">
+      <% flash.each do |type, message| %>
+        <% message = [message] if message.class.eql?(String) %>
+        <div class="alert alert-<%= type.eql?('alert') ? 'danger' : 'info' %>" id="alert">
+          <% if message.count > 1 %>
+            <ul>
+              <% message.each do |msg| %>
+              <li><%= msg %></li>
+              <% end %>
+            </ul>
+          <% else %>
+            <%= message.to_sentence %>
+          <% end %>
+        </div>
+      <% end %>
+
     <%= yield %>
+    </div>
   </body>
 </html>
+
+<script>
+  $("#alert").delay(1500).slideUp(500)
+</script>
